@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scroll Based Animation</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <canvas class="webgl"></canvas>
+
+  <nav class="navbar">
+    <ul>
+      <li><a href="#hero">Home</a></li>
+      <li><a href="#portfolio">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <section id="hero" class="section hero fade-in">
+    <h1 class="hero-title">Animatiooooon</h1>
+    <p class="hero-subtitle">Scroll down! check it.</p>
+  </section>
+
+  <section id="portfolio" class="section portfolio fade-in">
+    <div class="content-card">
+      <h2>Projects</h2>
+      <p>this is my project.</p>
+    </div>
+  </section>
+
+  <section id="contact" class="section contact fade-in">
+    <div class="content-card">
+      <h2>Contact</h2>
+      <p>Email me at <a href="mailto:bbalajeboco.bb@gmail.com">bbalajeboco.bb@gmail.com</a></p>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>Designer: Bea Balajeboco</p>
+  </footer>
+
+  <script type="module" src="./script.js"></script>
+  <script>
+    const faders = document.querySelectorAll('.fade-in');
+    const appearOptions = { threshold: 0.2 };
+    const appearOnScroll = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('appear');
+        observer.unobserve(entry.target);
+      });
+    }, appearOptions);
+    faders.forEach(fader => appearOnScroll.observe(fader));
+  </script>
+
+  <script>
+    document.querySelectorAll('.navbar a').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        document.querySelector(targetId).scrollIntoView({ behavior: 'smooth' });
+        });
+    });
+
+    const sections = document.querySelectorAll('section');
+    const navLinks = document.querySelectorAll('.navbar a');
+
+    window.addEventListener('scroll', () => {
+        let current = '';
+        sections.forEach(section => {
+        const sectionTop = section.offsetTop - 200;
+        if (scrollY >= sectionTop) current = section.getAttribute('id');
+        });
+
+        navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${current}`) link.classList.add('active');
+        });
+    });
+    </script>
+
+</body>
+</html>
